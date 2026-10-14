@@ -1,23 +1,4 @@
-import { ageLabel, avatarTone, formatDate, initials } from '../lib/format'
-
-export function Avatar({ citizen, size = 40 }) {
-  const hue = avatarTone(citizen.citizen_id)
-  return (
-    <span
-      className="avatar"
-      style={{
-        width: size,
-        height: size,
-        fontSize: size * 0.38,
-        background: `hsl(${hue} 32% 90%)`,
-        color: `hsl(${hue} 45% 26%)`,
-      }}
-      aria-hidden="true"
-    >
-      {initials(citizen)}
-    </span>
-  )
-}
+import Portrait from './Portrait'
 
 export function StatusPill({ deceased }) {
   return (
@@ -27,42 +8,20 @@ export function StatusPill({ deceased }) {
   )
 }
 
+// Photos only. Every detail lives in the drawer that opens on click.
 export default function CitizenList({ rows, loading, onOpen, selectedId }) {
   return (
-    <div className={`list ${loading ? 'is-loading' : ''}`} role="list">
-      <div className="list__head" aria-hidden="true">
-        <span>Citizen</span>
-        <span>Date of birth</span>
-        <span>CRN</span>
-        <span>NIN</span>
-        <span>Status</span>
-      </div>
-
+    <div className={`gallery ${loading ? 'is-loading' : ''}`} role="list">
       {rows.map((c) => (
         <button
           key={c.citizen_id}
           role="listitem"
           type="button"
-          className={`row ${selectedId === c.citizen_id ? 'is-selected' : ''}`}
+          className={`photo ${selectedId === c.citizen_id ? 'is-selected' : ''} ${c.is_deceased ? 'photo--deceased' : ''}`}
           onClick={() => onOpen(c)}
+          aria-label={`Open record for ${c.first_name} ${c.last_name}`}
         >
-          <span className="row__who">
-            <Avatar citizen={c} />
-            <span>
-              <strong>{c.first_name} {c.last_name}</strong>
-              <small>{c.gender}</small>
-            </span>
-          </span>
-          <span className="row__dob">
-            {formatDate(c.date_of_birth)}
-            <small>{ageLabel(c.date_of_birth)}</small>
-          </span>
-          <span className="row__crn mono">
-            {c.crn}
-            {c.temporary_birth_id && <small className="tag">{c.temporary_birth_id}</small>}
-          </span>
-          <span className="row__nin mono">{c.nin_masked}</span>
-          <span className="row__status"><StatusPill deceased={c.is_deceased} /></span>
+          <Portrait citizen={c} />
         </button>
       ))}
     </div>

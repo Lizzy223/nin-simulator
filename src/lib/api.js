@@ -18,7 +18,7 @@ async function sbList({ page, pageSize, search, gender, status, sort }) {
   if (term) {
     const like = `%${term}%`
     q = q.or(
-      `first_name.ilike.${like},last_name.ilike.${like},crn.ilike.${like},temporary_birth_id.ilike.${like}`
+      `first_name.ilike.${like},last_name.ilike.${like},nin.ilike.${like},temporary_birth_id.ilike.${like}`
     )
   }
   if (gender !== 'all') q = q.eq('gender', gender)
@@ -69,7 +69,7 @@ async function localList({ page, pageSize, search, gender, status, sort }) {
     if (status === 'living' && r.is_deceased) return false
     if (status === 'deceased' && !r.is_deceased) return false
     if (!term) return true
-    return [r.first_name, r.last_name, r.crn, r.temporary_birth_id ?? '']
+    return [r.first_name, r.last_name, r.nin, r.temporary_birth_id ?? '']
       .some((v) => v.toLowerCase().includes(term))
   })
 

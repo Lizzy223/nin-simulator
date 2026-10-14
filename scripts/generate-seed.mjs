@@ -9,7 +9,7 @@ const rows = generateCitizens(COUNT)
 const q = (v) => (v === null ? 'null' : `'${String(v).replace(/'/g, "''")}'`)
 const cols = [
   'citizen_id','first_name','last_name','date_of_birth','gender',
-  'crn','temporary_birth_id','nin_masked','is_deceased',
+  'nin','temporary_birth_id','is_deceased',
 ]
 
 const chunks = []
@@ -17,7 +17,7 @@ for (let i = 0; i < rows.length; i += 200) {
   const values = rows
     .slice(i, i + 200)
     .map((r) =>
-      `(${[q(r.citizen_id), q(r.first_name), q(r.last_name), q(r.date_of_birth), q(r.gender), q(r.crn), q(r.temporary_birth_id), q(r.nin_masked), r.is_deceased].join(', ')})`
+      `(${[q(r.citizen_id), q(r.first_name), q(r.last_name), q(r.date_of_birth), q(r.gender), q(r.nin), q(r.temporary_birth_id), r.is_deceased].join(', ')})`
     )
     .join(',\n  ')
   chunks.push(`insert into public.citizens (${cols.join(', ')}) values\n  ${values}\non conflict (citizen_id) do nothing;`)

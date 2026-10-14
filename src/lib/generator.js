@@ -58,7 +58,7 @@ function randomDob(rng) {
 
 export function generateCitizens(count = 1200, seed = 20261012) {
   const rng = mulberry32(seed)
-  const seenCrn = new Set()
+  const seenNin = new Set()
   const rows = []
 
   for (let i = 0; i < count; i++) {
@@ -68,18 +68,16 @@ export function generateCitizens(count = 1200, seed = 20261012) {
     const date_of_birth = randomDob(rng)
     const birthYear = Number(date_of_birth.slice(0, 4))
 
-    let crn
+    // NIN is a unique 11-digit number.
+    let nin
     do {
-      crn = `CRN-${birthYear}-${digits(rng, 8)}`
-    } while (seenCrn.has(crn))
-    seenCrn.add(crn)
+      nin = digits(rng, 11)
+    } while (seenNin.has(nin))
+    seenNin.add(nin)
 
     // Only recent births still carry a temporary birth ID, and only some of them.
     const hasTemp = birthYear >= 2018 && rng() < 0.7
     const temporary_birth_id = hasTemp ? `TBID-${hex(rng, 6).toUpperCase()}` : null
-
-    // NIN is 11 digits; only the last 4 are ever shown.
-    const nin_masked = `*******${digits(rng, 4)}`
 
     const age = 2026 - birthYear
     const is_deceased = age > 35 && rng() < (age > 75 ? 0.28 : 0.06)
@@ -90,9 +88,8 @@ export function generateCitizens(count = 1200, seed = 20261012) {
       last_name,
       date_of_birth,
       gender,
-      crn,
       temporary_birth_id,
-      nin_masked,
+      nin,
       is_deceased,
     })
   }

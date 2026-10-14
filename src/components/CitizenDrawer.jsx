@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { ageLabel, formatDate, initials } from '../lib/format'
+import { ageLabel, formatDate } from '../lib/format'
+import Portrait from './Portrait'
 import { StatusPill } from './CitizenList'
 
 function CopyField({ label, value }) {
@@ -66,7 +67,7 @@ export default function CitizenDrawer({ citizen, onClose }) {
             <span className="idcard__mock">Mock data</span>
           </div>
           <div className="idcard__body">
-            <div className="idcard__photo" aria-hidden="true">{initials(c)}</div>
+            <div className="idcard__photo"><Portrait citizen={c} /></div>
             <div>
               <p className="idcard__label">Surname</p>
               <p className="idcard__value idcard__value--big">{c.last_name}</p>
@@ -77,7 +78,7 @@ export default function CitizenDrawer({ citizen, onClose }) {
           <div className="idcard__grid">
             <div><p className="idcard__label">Date of birth</p><p className="idcard__value">{formatDate(c.date_of_birth)}</p></div>
             <div><p className="idcard__label">Sex</p><p className="idcard__value">{c.gender}</p></div>
-            <div><p className="idcard__label">NIN</p><p className="idcard__value mono">{c.nin_masked}</p></div>
+            <div><p className="idcard__label">NIN</p><p className="idcard__value mono">{c.nin}</p></div>
           </div>
           {c.is_deceased && <div className="idcard__stamp">Deceased</div>}
         </div>
@@ -89,9 +90,8 @@ export default function CitizenDrawer({ citizen, onClose }) {
 
         <dl className="fields">
           <CopyField label="Citizen ID" value={c.citizen_id} />
-          <CopyField label="Civil registration number (CRN)" value={c.crn} />
           <CopyField label="Temporary birth ID" value={c.temporary_birth_id} />
-          <CopyField label="NIN (masked)" value={c.nin_masked} />
+          <CopyField label="NIN" value={c.nin} />
         </dl>
 
         <button type="button" className="ghost" onClick={() => setJson((v) => !v)} aria-expanded={json}>

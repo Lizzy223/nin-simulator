@@ -6,9 +6,8 @@ create table if not exists public.citizens (
   last_name           text not null,
   date_of_birth       date not null,
   gender              text not null,
-  crn                 text unique,
   temporary_birth_id  text,
-  nin_masked          text not null,
+  nin                 text not null unique check (nin ~ '^[0-9]{11}$'),
   is_deceased         boolean not null default false
 );
 

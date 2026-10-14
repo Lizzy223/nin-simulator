@@ -1,8 +1,14 @@
 import { SORTS } from '../lib/api'
 
-export default function Filters({ query, onChange }) {
+export default function Filters({ query, onChange, onSearch }) {
   return (
-    <div className="filters">
+    <form
+      className="filters"
+      onSubmit={(e) => {
+        e.preventDefault()
+        onSearch()
+      }}
+    >
       <label className="search">
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
           <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" strokeWidth="2" />
@@ -13,9 +19,10 @@ export default function Filters({ query, onChange }) {
           type="search"
           value={query.searchInput}
           onChange={(e) => onChange({ searchInput: e.target.value })}
-          placeholder="Search by name, CRN or temporary birth ID"
+          placeholder="Search by name, NIN or temporary birth ID"
           autoFocus
         />
+        <button type="submit" className="search__go">Search</button>
       </label>
 
       <div className="filters__row">
@@ -51,6 +58,6 @@ export default function Filters({ query, onChange }) {
           </select>
         </label>
       </div>
-    </div>
+    </form>
   )
 }

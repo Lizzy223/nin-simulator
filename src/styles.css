@@ -103,7 +103,7 @@ code { font-family: var(--mono); background: rgba(11,107,69,.1); padding: 1px 5p
 .list.is-loading { opacity: .55; }
 .list__head, .row {
   display: grid; align-items: center; gap: 16px; padding: 0 20px;
-  grid-template-columns: minmax(200px, 2.2fr) 1.3fr 1.8fr 1.1fr 0.9fr;
+  grid-template-columns: minmax(200px, 2.2fr) 1.3fr 1.8fr 0.9fr;
 }
 .list__head { height: 42px; font-size: 12.5px; color: var(--ink-3); font-weight: 500; border-bottom: 1px solid var(--line); background: #f7f9f8; }
 .row {
@@ -201,12 +201,11 @@ code { font-family: var(--mono); background: rgba(11,107,69,.1); padding: 1px 5p
   .stats__item:nth-child(3) { padding-left: 0; border-left: 0; }
   .stats__item:nth-child(n+3) { border-top: 1px solid var(--line); }
   .list__head { display: none; }
-  .row { grid-template-columns: 1fr auto; grid-template-areas: 'who status' 'dob nin' 'crn crn'; row-gap: 6px; padding: 14px 16px; }
+  .row { grid-template-columns: 1fr auto; grid-template-areas: 'who status' 'dob nin'; row-gap: 6px; padding: 14px 16px; }
   .row__who { grid-area: who; }
   .row__status { grid-area: status; justify-self: end; }
   .row__dob { grid-area: dob; font-size: 13.5px; }
   .row__nin { grid-area: nin; justify-self: end; }
-  .row__crn { grid-area: crn; font-size: 13px; }
   .row__dob small { display: inline; margin-left: 6px; }
 }
 @media (max-width: 520px) {
@@ -219,3 +218,14 @@ code { font-family: var(--mono); background: rgba(11,107,69,.1); padding: 1px 5p
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* ---------- photo gallery ---------- */
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; transition: opacity .15s; }
+.gallery.is-loading { opacity: .55; }
+.photo { padding: 0; border: 3px solid transparent; border-radius: var(--radius); overflow: hidden; background: var(--surface); box-shadow: 0 1px 3px rgba(0,0,0,.12); aspect-ratio: 4 / 5; transition: transform .12s, border-color .12s; }
+.photo:hover { transform: translateY(-3px); border-color: var(--green); }
+.photo.is-selected { border-color: var(--green-d); }
+.photo--deceased { filter: grayscale(.85); }
+.portrait { display: block; width: 100%; height: 100%; }
+.idcard__photo { overflow: hidden; display: block; padding: 0; }
+.search__go { flex: none; height: 40px; padding: 0 20px; border: 0; border-radius: 8px; background: var(--green-d); color: #fff; font-weight: 600; }
